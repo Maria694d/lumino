@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Station 8 – Das Geburtstagsfeuer</title>
+<style>
+  :root{--ink:#eef2ff;--card:rgba(12,13,22,.90);--edge:#2b2f45}
+  html,body{height:100%}
+  body{margin:0;color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
+  .bg{position:fixed;inset:0;background:center/cover no-repeat;filter:brightness(.9) contrast(1.05)}
+  .wrap{position:relative;min-height:100%;display:flex;align-items:center;justify-content:center;padding:20px}
+  .card{width:min(900px,95vw);background:var(--card);border:1px solid var(--edge);border-radius:16px;padding:22px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .btn{background:linear-gradient(135deg,#ffb454,#ff9333);color:#111;
+       padding:12px 18px;border-radius:12px;font-weight:800;text-decoration:none;display:inline-block}
+  audio{width:100%;margin-top:12px}
+  input[type=text]{flex:1;min-width:220px;background:#101223;border:1px solid #33364a;color:#e9edf5;border-radius:10px;padding:10px 12px;font-size:18px}
+  .msg{margin-top:10px;padding:10px;border-radius:10px;display:none}
+  .ok{background:#12351a;border:1px solid #2b7a3f;color:#b6f2c6}
+  .bad{background:#3a1b1b;border:1px solid #7a2b2b;color:#ffc0c0}
+</style>
+<body>
+  <div class="bg" style="background-image:url('./station8.jpg')"></div>
+  <div class="wrap"><div class="card">
+    <h1>Station 8 – Das Geburtstagsfeuer</h1>
+    <p>Legt mit euren Knicklichtern die <b>Zahl 7</b> auf den Boden. Stellt euch im Kreis darum auf und folgt Luminós Anweisungen.</p>
+    <h3>🔊 Aufgabe (Teil 1)</h3>
+    <audio controls preload="auto" src="./station8.1.mp3"></audio>
+    <h3>🔊 Abschluss (Teil 2)</h3>
+    <audio controls preload="auto" src="./station8.2.mp3"></audio>
+    <p style="margin:12px 0 6px">Gebt das Codewort ein, um das Finale zu öffnen:</p>
+    <div class="row">
+      <input id="answer" type="text" placeholder="Codewort …">
+      <a class="btn" href="javascript:void(0)" onclick="check()">Prüfen</a>
+    </div>
+    <div id="result" class="msg"></div>
+    <p class="row" style="margin-top:12px">
+      <a class="btn" href="./station7.html">← Zurück</a>
+      <a class="btn" href="./index.html">⟲ Start</a>
+    </p>
+  </div></div>
+  
+  <audio id="bgm" src="./Hintergrund.mp3" loop preload="auto"></audio>
+  <button id="musicBtn" aria-label="Musik" style="position:fixed;right:14px;top:14px;z-index:99;
+    background:linear-gradient(135deg,#ffb454,#ff9333);color:#111;border:0;border-radius:999px;
+    padding:10px 14px;font-weight:800">🔈 Musik</button>
+  <script>
+  (function(){
+    const a = document.getElementById('bgm');
+    const b = document.getElementById('musicBtn');
+    if(!a||!b) return;
+    a.volume = 0.20; a.playsInline = true;
+    function refresh(){
+      const on = localStorage.getItem('mp_bgm_on')==='1';
+      b.textContent = on ? '🔊 Musik' : '🔈 Musik';
+      if(on){ a.play().catch(()=>{});} else { a.pause(); }
+    }
+    b.addEventListener('click',()=>{
+      const on = localStorage.getItem('mp_bgm_on')==='1';
+      localStorage.setItem('mp_bgm_on', on ? '0' : '1');
+      refresh();
+    });
+    document.addEventListener('visibilitychange',()=>{ if(!document.hidden) refresh(); });
+    window.addEventListener('pageshow', refresh);
+    refresh();
+  })();
+  </script>
+
+<script>
+function norm(s){return (s||'').toLowerCase().trim();}
+function check(){
+  const ok = norm(document.getElementById('answer').value) === 'lumino';
+  const box = document.getElementById('result');
+  box.style.display='block'; box.className='msg ' + (ok?'ok':'bad');
+  box.innerHTML = ok
+    ? '✅ Richtig! Das Geburtstagsfeuer erwacht. <br><br><a class="btn" href="./finale.html">➡️ Zum Finale</a>'
+    : '❌ Das ist noch nicht richtig. Versucht es gemeinsam noch einmal.';
+}
+</script>
+</body></html>
