@@ -35,7 +35,7 @@
     const a = document.getElementById('bgm');
     const b = document.getElementById('musicBtn');
     if(!a||!b) return;
-    a.volume = 0.20; a.playsInline = true;
+    a.volume = 0.05; a.playsInline = true;
     function refresh(){
       const on = localStorage.getItem('mp_bgm_on')==='1';
       b.textContent = on ? '🔊 Musik' : '🔈 Musik';
